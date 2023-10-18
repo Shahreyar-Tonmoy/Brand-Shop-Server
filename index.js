@@ -62,7 +62,7 @@ async function run() {
             const filter = {_id : new ObjectId(id) }
             const options = { upsert : true}
             const UpdateProduct = req.body
-            const Update = {
+            const Updates = {
                 $set : {
                     name: UpdateProduct.name,
                      brand: UpdateProduct.brand,
@@ -73,7 +73,7 @@ async function run() {
                           photoURL: UpdateProduct.photoURL
                 }
             }
-            const result = await productCollaction.updateOne(filter, Update,options)
+            const result = await productCollaction.updateOne(filter, Updates,options)
             res.send(result)
         })
 
