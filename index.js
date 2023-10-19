@@ -36,44 +36,46 @@ async function run() {
 
         const productCollaction = client.db("Adidas").collection('product')
 
-        app.get('/product',async(req,res) =>{
+        app.get('/product', async (req, res) => {
             const cursor = productCollaction.find()
             const result = await cursor.toArray()
             res.send(result)
         })
-        app.get('/product/:id',async(req,res) =>{
+        app.get('/product/:id', async (req, res) => {
             const id = req.params.id
-            const query ={_id: new ObjectId(id) } 
+            const query = { _id: new ObjectId(id) }
             const result = await productCollaction.findOne(query)
             res.send(result)
 
         })
 
-
-        app.post('/product', async(req,res)=>{
-            const addProduct =req.body
+        // post opciton
+        app.post('/product', async (req, res) => {
+            const addProduct = req.body
             console.log(addProduct);
             const result = await productCollaction.insertOne(addProduct)
             res.send(result)
         })
 
-        app.put('/product/:id',async(req,res) =>{
-            const id =req.params.id
-            const filter = {_id : new ObjectId(id) }
-            const options = { upsert : true}
+        // update opction
+
+        app.put('/product/:id', async (req, res) => {
+            const id = req.params.id
+            const filter = { _id: new ObjectId(id) }
+            const options = { upsert: true }
             const UpdateProduct = req.body
             const Updates = {
-                $set : {
+                $set: {
                     name: UpdateProduct.name,
-                     brand: UpdateProduct.brand,
-                      type: UpdateProduct.type,
-                       price: UpdateProduct.price,
-                        shortDescription: UpdateProduct.shortDescription,
-                         rating: UpdateProduct.rating,
-                          photoURL: UpdateProduct.photoURL
+                    brand: UpdateProduct.brand,
+                    type: UpdateProduct.type,
+                    price: UpdateProduct.price,
+                    shortDescription: UpdateProduct.shortDescription,
+                    rating: UpdateProduct.rating,
+                    photoURL: UpdateProduct.photoURL
                 }
             }
-            const result = await productCollaction.updateOne(filter, Updates,options)
+            const result = await productCollaction.updateOne(filter, Updates, options)
             res.send(result)
         })
 
